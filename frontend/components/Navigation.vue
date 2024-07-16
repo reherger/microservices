@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+const auth = useAuth()
 </script>
 
 <template>
@@ -19,20 +19,29 @@
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink to="/betting" active>
+            <NavLink to="/betting">
               Betting
             </NavLink>
           </NavItem>
         </NavbarNavList>
-        <NavItemDropdown flex>
-          <NavItemDropdownToggle>Dropdown</NavItemDropdownToggle>
+        <LoginLink to="/api/login" class="p-2" external flex v-if="!auth.loggedIn">
+          Sign in
+        </LoginLink>
+        <RegisterLink to="/api/register" class="p-2" external flex v-if="!auth.loggedIn">
+          Sign up
+        </RegisterLink>
+        <NavItemDropdown flex v-if="auth.loggedIn">
+          <NavItemDropdownToggle class="text-primary">Hi, {{auth.user.name}}</NavItemDropdownToggle>
           <DropdownMenu>
-            <DropdownItem>Action</DropdownItem>
             <DropdownItem to="/betting">
-              betting
+              Betting
             </DropdownItem>
             <DropdownItemDivider/>
-            <DropdownItem>Something else here</DropdownItem>
+            <DropdownItem>
+              <NuxtLink to="/api/logout" external>
+                Sign out
+              </NuxtLink>
+            </DropdownItem>
           </DropdownMenu>
         </NavItemDropdown>
       </NavbarCollapse>
